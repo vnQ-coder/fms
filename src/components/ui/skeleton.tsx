@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
  * Skeleton loader component for loading states
  */
 
-interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {}
+type SkeletonProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function Skeleton({ className, ...props }: SkeletonProps) {
   return (

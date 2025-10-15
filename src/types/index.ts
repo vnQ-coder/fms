@@ -65,7 +65,7 @@ export interface FormFieldProps {
 export interface AuthFormProps {
   title: string;
   description: string;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: Record<string, unknown>) => Promise<void>;
   isLoading: boolean;
   children: React.ReactNode;
   footer?: React.ReactNode;

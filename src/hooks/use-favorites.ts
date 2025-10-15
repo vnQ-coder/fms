@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { addFavorite, deleteFavorite } from "@/app/actions/favorites";
 import { FAVORITES_MESSAGES } from "@/lib/constants";
@@ -11,7 +11,6 @@ import type { Favorite, FavoriteFormData } from "@/types";
 
 interface UseFavoritesReturn {
   favorites: Favorite[];
-  isPending: boolean;
   isAdding: boolean;
   deletingId: string | null;
   addNewFavorite: (data: FavoriteFormData) => Promise<void>;
@@ -22,7 +21,6 @@ export function useFavorites(
   initialFavorites: Favorite[]
 ): UseFavoritesReturn {
   const [favorites, setFavorites] = useState<Favorite[]>(initialFavorites);
-  const [isPending, startTransition] = useTransition();
   const [isAdding, setIsAdding] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -31,9 +29,9 @@ export function useFavorites(
     
     const result = await addFavorite(data);
 
-    if (result.success && result.data?.favorite) {
+    if (result.success && result.data) {
       // Immediately add to state
-      setFavorites((prev) => [result.data.favorite, ...prev]);
+      setFavorites((prev) => [result.data!.favorite, ...prev]);
       toast.success(FAVORITES_MESSAGES.ADD_SUCCESS);
     } else {
       toast.error(result.error || FAVORITES_MESSAGES.ADD_ERROR);
@@ -64,7 +62,6 @@ export function useFavorites(
 
   return {
     favorites,
-    isPending,
     isAdding,
     deletingId,
     addNewFavorite,

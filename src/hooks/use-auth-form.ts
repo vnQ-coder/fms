@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm, UseFormReturn, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -10,7 +10,7 @@ import type { z } from "zod";
  * Handles form state, validation, submission, and navigation
  */
 
-interface UseAuthFormOptions<T extends z.ZodType> {
+interface UseAuthFormOptions<T extends z.ZodType<FieldValues>> {
   schema: T;
   onSubmit: (data: z.infer<T>) => Promise<{ error?: string; success?: boolean }>;
   successMessage: string;
@@ -18,12 +18,12 @@ interface UseAuthFormOptions<T extends z.ZodType> {
   redirectTo?: string;
 }
 
-interface UseAuthFormReturn<T> extends UseFormReturn<T> {
+type UseAuthFormReturn<T extends FieldValues> = UseFormReturn<T> & {
   isLoading: boolean;
   handleFormSubmit: (data: T) => Promise<void>;
-}
+};
 
-export function useAuthForm<T extends z.ZodType>({
+export function useAuthForm<T extends z.ZodType<FieldValues>>({
   schema,
   onSubmit,
   successMessage,
@@ -34,6 +34,7 @@ export function useAuthForm<T extends z.ZodType>({
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<T>>({
+    // @ts-expect-error - zodResolver type compatibility issue with Zod v4
     resolver: zodResolver(schema),
   });
 
@@ -64,6 +65,5 @@ export function useAuthForm<T extends z.ZodType>({
     ...form,
     isLoading,
     handleFormSubmit,
-  };
+  } as UseAuthFormReturn<z.infer<T>>;
 }
-

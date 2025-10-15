@@ -53,7 +53,7 @@ export async function registerUser(
     console.error("Registration error:", error);
 
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0].message };
+      return { success: false, error: error.issues[0].message };
     }
 
     if (error instanceof Error) {
