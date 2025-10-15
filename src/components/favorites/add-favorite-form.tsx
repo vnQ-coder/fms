@@ -70,4 +70,3 @@ export function AddFavoriteForm({ onSubmit, isLoading }: AddFavoriteFormProps) {
     </Card>
   );
 }
-

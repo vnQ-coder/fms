@@ -32,7 +32,11 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           )}
           aria-invalid={!!error}
           aria-describedby={
-            error ? `${fieldId}-error` : helperText ? `${fieldId}-helper` : undefined
+            error
+              ? `${fieldId}-error`
+              : helperText
+              ? `${fieldId}-helper`
+              : undefined
           }
           {...props}
         />
@@ -46,10 +50,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           </p>
         )}
         {!error && helperText && (
-          <p
-            id={`${fieldId}-helper`}
-            className="text-sm text-muted-foreground"
-          >
+          <p id={`${fieldId}-helper`} className="text-sm text-muted-foreground">
             {helperText}
           </p>
         )}
@@ -59,4 +60,3 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
 );
 
 FormField.displayName = "FormField";
-
